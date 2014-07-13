@@ -13,4 +13,4 @@
           region_id=3
           size_id=66
           image_id=3240036
-          wait_timeout=500
+          unique_name=yes
