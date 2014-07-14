@@ -7,12 +7,14 @@
 
 - name: Install Raring kernel headers
   apt: name=linux-headers-generic-lts-raring state=present
+  register: result
 
 - name: Restart server
   command: shutdown -r now "Ansible updates triggered"
   async: 0
   poll: 0
   ignore_errors: true
+  when: result|changed
 
 - name: Wait for server to come back
   local_action: wait_for host={{ inventory_hostname }} port=22 state=started
@@ -29,3 +31,9 @@
 
 - name: Install Docker
   apt: name=lxc-docker state=present
+
+- name: Install Pip
+  apt: name=python-pip state=present
+
+- name: Install Python Docker client library
+  pip: name=docker-py state=present
