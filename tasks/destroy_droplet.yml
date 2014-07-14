@@ -1,0 +1,11 @@
+---
+- name: ensure droplet does not exist
+  digital_ocean: >
+    state=absent
+    command=droplet
+    id={{ item.id }}
+    client_id={{ do_client_id }}
+    api_key={{ do_api_key }}
+  with_items: droplets
+
+

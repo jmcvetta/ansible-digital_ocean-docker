@@ -1,0 +1,37 @@
+---
+- name: ensure SSH key exists
+  digital_ocean: >
+    command=ssh
+    state=present
+    name=ansible
+    ssh_pub_key="{{ do_ansible_ssh_key }}"
+    client_id={{ do_client_id }}
+    api_key={{ do_api_key }}
+  register: ssh_key_result
+
+- name: extract SSH key id
+  set_fact:
+    ssh_key_id: "{{ ssh_key_result.ssh_key.id }}"
+    
+- debug: msg="SSH KEY ID {{ ssh_key_id }}"
+
+- debug: msg="SSH KEY CHANGED {{ ssh_key_result.changed }}"
+
+- name: ensure droplet exists
+  digital_ocean: >
+    state=present
+    command=droplet
+    name={{ item.name }}
+    region_id={{ do_region_id }}
+    size_id={{ do_size_id }}
+    image_id={{ do_image_id }}
+    unique_name=yes
+    ssh_key_ids=[{{ ssh_key_id }}]
+    client_id={{ do_client_id }}
+    api_key={{ do_api_key }}
+  register: result
+  with_items: droplets
+
+- debug: msg="DROPLET ID is {{ item.droplet.id }}"
+  with_items: result.results
+

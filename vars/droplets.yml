@@ -1,0 +1,11 @@
+---
+droplets:
+  - name: builder.0
+  - name: docker.0
+
+do_size_id: 66
+do_region_id: 3
+do_image_id: 3240036
+do_ansible_ssh_key: "{{ lookup('file', '/home/jason/.ssh/id_dsa.pub') }}"
+
+#  - name: docker.1

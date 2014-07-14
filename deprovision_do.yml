@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  connection: local
+  serial: 1
+  gather_facts: False
+
+  vars_files:
+    - vars/credentials.yml
+    - vars/droplets.yml
+
+  tasks:
+    - shell: ./dohosts --droplets
+      register: result
+
+    - set_fact:
+        all_droplets: "{{ (result.stdout|from_json).droplets }}"
+
+    - include: tasks/destroy_droplet.yml droplets={{all_droplets}}

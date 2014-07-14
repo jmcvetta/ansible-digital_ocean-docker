@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  connection: local
+  serial: 1
+  gather_facts: False
+
+  vars_files:
+    - vars/credentials.yml
+    - vars/droplets.yml
+
+  tasks:
+    - include: tasks/create_droplet.yml droplets={{droplets}}
