@@ -1,0 +1,12 @@
+---
+- hosts: builder
+  remote_user: root
+  gather_facts: no
+
+  vars_files:
+    - vars/credentials.yml
+
+  tasks:
+
+    - include: tasks/docker.yml
+
