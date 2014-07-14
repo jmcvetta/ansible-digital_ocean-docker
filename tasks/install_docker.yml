@@ -2,10 +2,10 @@
 - name: Update APT cache
   apt: update_cache=yes
 
-- name: Install Raring kernel images
+- name: Ensure Raring kernel image is installed
   apt: name=linux-image-generic-lts-raring state=present
 
-- name: Install Raring kernel headers
+- name: Ensure Raring kernel headers are installed
   apt: name=linux-headers-generic-lts-raring state=present
   register: result
 
@@ -20,20 +20,24 @@
   local_action: wait_for host={{ inventory_hostname }} port=22 state=started
   sudo: false
 
-- name: Add Docker APT key 
+- name: Ensure Docker APT key exists
   apt_key: url=https://get.docker.io/gpg state=present
 
-- name: Add Docker APT repository
+- name: Ensure Docker APT repository is available
   apt_repository: repo='deb http://get.docker.io/ubuntu docker main' state=present
 
 - name: Update APT cache
   apt: update_cache=yes
 
-- name: Install Docker
+- name: Ensure Docker is installed
   apt: name=lxc-docker state=present
 
-- name: Install Pip
+- name: Ensure Pip is installed
   apt: name=python-pip state=present
 
-- name: Install Python Docker client library
-  pip: name=docker-py state=present
+# 
+# Use specific versoin of docker-py because current version, as of 14 Jul 2014, 
+# won't work with Ansible.
+# 
+- name: Ensure Python Docker client library is installed
+  pip: name=docker-py version=0.3.1 state=present
