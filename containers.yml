@@ -1,0 +1,27 @@
+---
+- hosts: builder
+  remote_user: root
+  gather_facts: no
+
+  vars_files:
+    - vars/credentials.yml
+    - vars/provision_hosts.yml
+
+  tasks:
+    - name: Create PostgreSQL Docker build directory
+      file: path=/srv/docker/postgres state=directory
+
+    - name: Install PostgreSQL Dockerfile 
+      copy: >
+        src="dockerfiles/postgres.dockerfile"
+        dest="/srv/docker/postgres/Dockerfile"
+
+    - name: Install SSH public key in Docker build directory
+      template: src=templates/id_dsa.pub.j2 dest=/srv/docker/postgres/id_dsa.pub
+
+    - name: Build PostgreSQL Docker image
+      docker_image: >
+        state=present
+        path="/srv/docker/postgres"
+        name="my/postgres"
+
