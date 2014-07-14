@@ -1,0 +1,10 @@
+---
+- name: ensure DNS record does not exist
+  digital_ocean_domain: >
+    state=absent
+    id={{ item.id }}
+    client_id={{ do_client_id }}
+    api_key={{ do_api_key }}
+  with_items: domains
+
+

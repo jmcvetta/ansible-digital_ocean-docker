@@ -9,10 +9,12 @@
     - vars/droplets.yml
 
   tasks:
-    - shell: ./dohosts --droplets
+    - shell: ./dohosts --all
       register: result
 
     - set_fact:
-        all_droplets: "{{ (result.stdout|from_json).droplets }}"
+        droplets: "{{ (result.stdout|from_json).droplets }}"
+        domains: "{{ (result.stdout|from_json).domains }}"
 
-    - include: tasks/destroy_droplet.yml droplets={{all_droplets}}
+    - include: tasks/destroy_droplet.yml droplets={{droplets}}
+    - include: tasks/destroy_domain.yml domains={{domains}}
