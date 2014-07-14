@@ -8,5 +8,5 @@
 
   tasks:
 
-    - include: tasks/docker.yml
+    - include: tasks/install_docker.yml
 
