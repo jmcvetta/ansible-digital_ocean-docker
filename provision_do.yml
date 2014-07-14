@@ -6,7 +6,7 @@
 
   vars_files:
     - vars/credentials.yml
-    - vars/droplets.yml
+    - vars/provision_hosts.yml
 
   tasks:
-    - include: tasks/create_droplet.yml droplets={{droplets}}
+    - include: tasks/create_droplet.yml droplets={{droplets_to_provision}}

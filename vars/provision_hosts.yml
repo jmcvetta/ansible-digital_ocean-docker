@@ -1,5 +1,5 @@
 ---
-droplets:
+droplets_to_provision:
   - name: builder
   - name: docker-0
 
