@@ -1,0 +1,13 @@
+---
+- name: fetch data from DO api
+  shell: ./dohosts --all
+  register: result
+
+- name: Populate facts with DO information
+  set_fact:
+    droplets: "{{ (result.stdout|from_json).droplets }}"
+    domains: "{{ (result.stdout|from_json).domains }}"
+    ssh_keys: "{{ (result.stdout|from_json).ssh_keys }}"
+    sizes: "{{ (result.stdout|from_json).sizes }}"
+    regions: "{{ (result.stdout|from_json).regions }}"
+    images: "{{ (result.stdout|from_json).images }}"
