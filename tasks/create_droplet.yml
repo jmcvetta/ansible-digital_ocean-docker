@@ -26,13 +26,19 @@
     size_id={{ do_size_id }}
     image_id={{ do_image_id }}
     unique_name=yes
-    ssh_key_ids=[{{ ssh_key_id }}]
+    ssh_key_ids={{ ssh_key_id }},
     client_id={{ do_client_id }}
     api_key={{ do_api_key }}
   register: result
   with_items: droplets
 
-- debug: msg="DROPLET is {{ item.droplet }}"
+- debug: msg="DROPLET ID is {{ item.droplet.id }}" 
+  with_items: result.results
+
+- debug: msg="DROPLET NAME is {{ item.droplet.name }}" 
+  with_items: result.results
+
+- debug: msg="DROPLET IP is {{ item.droplet.ip_address }}" 
   with_items: result.results
 
 - name: ensure domain names exist
@@ -41,9 +47,5 @@
     name={{ item.droplet.name }}.metredev.com
     id={{ item.droplet.id }}
     ip={{ item.droplet.ip_address }}
-  with_items: result.results
-
-
-- debug: msg="DROPLET ID is {{ item.droplet.id }}"
   with_items: result.results
 
