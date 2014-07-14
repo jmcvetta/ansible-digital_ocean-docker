@@ -6,7 +6,7 @@
 
   vars_files:
     - vars/credentials.yml
-    - vars/droplets.yml
+    - vars/provision_hosts.yml
 
   tasks:
     - shell: ./dohosts --all
