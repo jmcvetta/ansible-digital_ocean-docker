@@ -32,6 +32,18 @@
   register: result
   with_items: droplets
 
+- debug: msg="DROPLET is {{ item.droplet }}"
+  with_items: result.results
+
+- name: ensure domain names exist
+  digital_ocean_domain: >
+    state=present
+    name={{ item.droplet.name }}.metredev.com
+    id={{ item.droplet.id }}
+    ip={{ item.droplet.ip_address }}
+  with_items: result.results
+
+
 - debug: msg="DROPLET ID is {{ item.droplet.id }}"
   with_items: result.results
 
