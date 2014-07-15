@@ -1,5 +1,5 @@
 ---
-- name: ensure droplet does not exist
+- name: Ensure Droplet does not exist
   digital_ocean: >
     state=absent
     command=droplet
@@ -8,4 +8,6 @@
     api_key={{ do_api_key }}
   with_items: droplets
 
-
+- name: Ensure Droplet host key removed from known_hosts
+  shell: ssh-keygen -f "/home/jason/.ssh/known_hosts" -R {{ item.ip_address }}
+  with_items: droplets
